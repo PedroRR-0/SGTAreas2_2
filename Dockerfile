@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD gunicorn kafu_online_admission_system.wsgi
+CMD gunicorn SGTAreas2_2.wsgi
