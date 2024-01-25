@@ -1,0 +1,24 @@
+
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+.destacado {
+    background-color: red;
+    color: white;
+}
+
+table .botonDisp:hover{
+    background-color: #4caf50;
+}
+
+
+

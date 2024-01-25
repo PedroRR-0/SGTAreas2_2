@@ -1,0 +1,79 @@
+{% load static %}
+<!-- tareas.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Tareas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'style2.css' %}">
+    <link rel="icon" href="{% static 'lupa.png' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Botones de estado uno encima del otro -->
+            <div class="col-md-3 mb-3">
+                <form method="post" action="{% url 'tareas' %}">
+                    {% csrf_token %}
+                    <div class="mb-3" style="width: 200px;">
+                        <button type="submit" name="estado" value="completadas" class="btn btn-primary mb-2 w-100">Mostrar Completadas</button>
+                        <button type="submit" name="estado" value="pendientes" class="btn btn-primary mb-2 w-100">Mostrar Pendientes</button>
+                        <button type="submit" name="estado" value="todas" class="btn btn-primary mb-2 w-100">Mostrar Todas</button>
+                    </div>
+                </form>
+                <!-- Formulario para filtrar por prioridad-->
+                <form method="post" action="{% url 'tareas' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="prioridad" class="form-label">Filtrar por Prioridad:</label>
+                        <div class="input-group w-50" style="width: 200px">
+                            <input type="number" name="prioridad" id="prioridad" class="form-control" min="1" placeholder="Prioridad">
+                        </div>
+                          <button type="submit" class="btn btn-primary w-50">Filtrar</button>
+                        <button onclick="location.href='{% url 'login' %}'" type="button" class="btn btn-secondary mb-2 mt-5 w-50">
+                            LOG OUT
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- Tabla y botón de agregar en el centro -->
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Prioridad</th>
+                            <th>Fecha de Vencimiento</th>
+                            <th>Estado</th>
+                            <th>Usuarios Asociados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tarea in tareas %}
+                            <tr>
+                                <td><a href="{% if usuario and usuario in tarea.usuarios.all %}{% url 'modificar_tarea' tarea.id %}{% endif %}" style="{% if usuario and usuario not in tarea.usuarios.all %}cursor:default;text-decoration: none;color:black{% endif %}">{{ tarea.nombre }}</a></td>
+                                <td>{{ tarea.prioridad }}</td>
+                                <td {% if tarea.fecha_vencimiento == today %}class="bg-danger text-white"{% endif %}>{{ tarea.fecha_vencimiento }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'tareas' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="tarea_id" value="{{ tarea.id }}">
+                                        <button type="submit" {% if tarea.estado %}disabled{% endif %} class="btn {% if not tarea.estado %}btn-success{% else %}btn-secondary{% endif %} {% if usuario and usuario in tarea.usuarios.all %}botonDisp{% endif %}">
+                                            {% if tarea.estado %}Completada{% else %}Pendiente{% endif %}
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>{{ tarea.obtener_nombres_usuarios | default:'Ninguno' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Botón para agregar nuevas tareas -->
+                <form method="get" action="{% url 'nueva_tarea' %}">
+                    <button type="submit" class="btn btn-primary">Agregar Nueva Tarea</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

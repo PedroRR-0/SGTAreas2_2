@@ -1,0 +1,58 @@
+{% load static %}
+<!-- nueva_tarea.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Modificar Tarea</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="{% static 'lupa.png' %}">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Modificar Tarea</h2>
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <div class="mb-3 row">
+                                <label for="{{ form.nombre.id_for_label }}" class="col-sm-3 col-form-label">{{ form.nombre.label }}</label>
+                                <div class="col-sm-9">
+                                    {{ form.nombre }}
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="{{ form.prioridad.id_for_label }}" class="col-sm-3 col-form-label">{{ form.prioridad.label }}</label>
+                                <div class="col-sm-9">
+                                    {{ form.prioridad }}
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="{{ form.fecha_vencimiento.id_for_label }}" class="col-sm-3 col-form-label">{{ form.fecha_vencimiento.label }}</label>
+                                <div class="col-sm-9">
+                                    {{ form.fecha_vencimiento }}
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="{{ form.usuarios.id_for_label }}" class="col-sm-3 col-form-label">{{ form.usuarios.label }}</label>
+                                <div class="col-sm-9">
+                                    {{ form.usuarios }}
+                                </div>
+                                <div class="col-sm-9">
+                                    {{ form.errors }}
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block mt-3 w-75">Modificar</button>
+                        </form>
+                        <button onclick="location.href='{% url 'tareas' %}'" type="button" class="btn btn-primary btn-block mt-3 w-75">
+                            Volver
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
